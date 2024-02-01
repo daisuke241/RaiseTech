@@ -13,9 +13,9 @@
 
 ![APサーバーを終了させた場合](images/lecture03-3.png)
 
-- APサーバーを再起動と動作確認
-![APサーバーを再起動](images/lecture03-4.png)
-![再起動後の動作確認](images/lecture03-8.png)
+- APサーバーを再度起動と動作確認
+![APサーバーを再度起動](images/lecture03-4.png)
+![再度起動後の動作確認](images/lecture03-8.png)
 
 
 ### DBサーバー
