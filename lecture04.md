@@ -18,23 +18,23 @@
 
 ### EC2のセキュリティグループ
 
-- インバウントルール
+- インバウンドルール
 
-![EC2のインバウントルール](images/lecture04-5.png)
+![EC2のインバウンドルール](images/lecture04-5.png)
 
-- アウトバウントルール
+- アウトバウンドルール
 
-![EC2のアウトバウントルール](images/lecture04-6.png)
+![EC2のアウトバウンドルール](images/lecture04-6.png)
 
 ### RDSのセキュリティグループ
 
-- インバウントルール
+- インバウンドルール
 
-![RDSのインバウントルール](images/lecture04-7.png)
+![RDSのインバウンドルール](images/lecture04-7.png)
 
-- アウトバウントルール
+- アウトバウンドルール
 
-![RDSのアウトバウントルール](images/lecture04-8.png)
+![RDSのアウトバウンドルール](images/lecture04-8.png)
 
 ### サブネットグループ
 
