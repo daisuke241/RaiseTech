@@ -36,3 +36,6 @@
 
 ![RDSのアウトバウントルール](images/lecture04-8.png)
 
+### サブネットグループ
+
+![サブネットグループ](images/lecture04-9.png)
