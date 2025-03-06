@@ -16,3 +16,23 @@
 
 ![EC2からRDSへ接続](images/lecture04-4.png)
 
+### EC2のセキュリティグループ
+
+- インバウントルール
+
+![EC2のインバウントルール](images/lecture04-5.png)
+
+- アウトバウントルール
+
+![EC2のアウトバウントルール](images/lecture04-6.png)
+
+### RDSのセキュリティグループ
+
+- インバウントルール
+
+![RDSのインバウントルール](images/lecture04-7.png)
+
+- アウトバウントルール
+
+![RDSのアウトバウントルール](images/lecture04-8.png)
+
