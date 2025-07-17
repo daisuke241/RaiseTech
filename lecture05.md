@@ -1,4 +1,4 @@
-#　第5回課題
+# 第5回課題
 
 ### 組み込みサーバー(Puma)でのRailsアプリケーション動作確認
 
@@ -30,4 +30,4 @@
 
 ### AWS構成図
 
-![AWS構成図](images/lecture05-10.png)
+![AWS構成図](images/lecture05-11)
