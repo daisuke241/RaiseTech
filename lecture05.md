@@ -30,4 +30,4 @@
 
 ### AWS構成図
 
-![AWS構成図](images/lecture05-11)
+![AWS構成図](images/lecture05-11.png)
