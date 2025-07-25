@@ -22,4 +22,4 @@
 
 ### AWS利用料の見積を作成
 
-https://calculator.aws/#/estimate?id=c5544a021806658cb8b53ef8d577cf2a8027ed7b
+https://calculator.aws/#/estimate?id=7b2c5fa0e9918817bb848d4d8594b04867c89a28
