@@ -219,16 +219,7 @@ Resources:
           FromPort: 80
           ToPort: 80
           SourceSecurityGroupId: !Ref ALBSecurityGroup
-          
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
 
-        - IpProtocol: icmp
-          FromPort: 8      
-          ToPort: -1      
-          CidrIp: 10.0.0.0/24  
       Tags:
         - Key: Name
           Value: !Sub "ec2-sg-${NameBase}"
@@ -240,7 +231,7 @@ Resources:
   EC2LaunchTemplate:
     Type: AWS::EC2::LaunchTemplate
     Properties:
-      LaunchTemplateName: SetIMDSv2
+      LaunchTemplateName: EC2_t2micro_AL2_IMDSv2
       LaunchTemplateData:
         InstanceType: t2.micro
         ImageId: ami-07b2f7dd0c0c16a8e
@@ -313,10 +304,6 @@ Resources:
           FromPort: 3306
           ToPort: 3306
           SourceSecurityGroupId: !Ref EC2SecurityGroup
-
-      SecurityGroupEgress:
-      - CidrIp: 127.0.0.1/32
-        IpProtocol: "-1"
       Tags:
         - Key: Name
           Value: !Sub "rds-sg-${NameBase}"
@@ -334,7 +321,7 @@ Resources:
         - !Ref PrivateSubnetC
       Tags:
         - Key: Name
-          Value: !Sub "rds-${NameBase}"
+          Value: !Sub "rds-subnet-${NameBase}"
 
 
 # ------------------------------------------------------------#
@@ -382,11 +369,6 @@ Resources:
         - IpProtocol: tcp
           FromPort: 80
           ToPort: 80
-          CidrIp: 0.0.0.0/0
-
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
           CidrIp: 0.0.0.0/0
       Tags:
           - Key: Name
