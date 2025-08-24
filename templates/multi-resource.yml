@@ -40,8 +40,10 @@ Parameters:
   DBPassword:
     Description: "Master password for the RDS instance"
     Type: String
-    Default: CFnMys91250818
     NoEcho: true
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: "[a-zA-Z0-9]*"
 
 
 # ------------------------------------------------------------#
@@ -326,7 +328,7 @@ Resources:
   RDSSubnetGroup:
     Type: AWS::RDS::DBSubnetGroup
     Properties:
-      DBSubnetGroupDescription: RDS subnet group for single AZ
+      DBSubnetGroupDescription: RDS subnet group
       SubnetIds:
         - !Ref PrivateSubnetA
         - !Ref PrivateSubnetC
