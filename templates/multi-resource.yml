@@ -334,7 +334,7 @@ Resources:
         - !Ref PrivateSubnetC
       Tags:
         - Key: Name
-          Value: !Sub "ec2-${NameBase}"
+          Value: !Sub "rds-${NameBase}"
 
 
 # ------------------------------------------------------------#
