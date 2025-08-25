@@ -1,0 +1,511 @@
+AWSTemplateFormatVersion: 2010-09-09
+Description:
+  RaiseTech AWS environment
+
+# ------------------------------------------------------------#
+# Parameters
+# ------------------------------------------------------------#
+# Input Parameters
+Parameters: 
+  NameBase:
+    Description: this is base name.
+    Type: String
+    Default: cfn-2508
+
+  VPCCidr:
+    Type: String
+    Default: 10.0.0.0/16
+
+  PublicSubnetACIDR:
+    Type: String
+    Default: "10.0.10.0/24"
+
+  PublicSubnetCCIDR:
+    Type: String
+    Default: "10.0.20.0/24"
+
+  PrivateSubnetACIDR:
+    Type: String
+    Default: "10.0.100.0/24"
+
+  PrivateSubnetCCIDR:
+    Type: String
+    Default: "10.0.200.0/24"
+  
+  DBUsername:
+    Description: "Master username for the RDS instance"
+    Type: String
+    Default: admin
+  
+  DBPassword:
+    Description: "Master password for the RDS instance"
+    Type: String
+    NoEcho: true
+    MinLength: 8
+    MaxLength: 41
+    AllowedPattern: "[a-zA-Z0-9]*"
+
+
+# ------------------------------------------------------------#
+# Resources
+# ------------------------------------------------------------#
+# 
+Resources:
+
+# ------------------------------------------------------------#
+# VPC
+# ------------------------------------------------------------# 
+# VPC Create
+  VPC:
+    Type: AWS::EC2::VPC
+    Properties:
+      CidrBlock: !Ref VPCCidr
+      EnableDnsSupport: true
+      EnableDnsHostnames: true
+      Tags:
+        - Key: Name
+          Value: !Sub VPC-${NameBase}
+          
+# InternetGateway Create
+  InternetGateway:
+    Type: AWS::EC2::InternetGateway
+    Properties:
+      Tags:
+        - Key: Name
+          Value: !Sub IGW-${NameBase}
+
+# IGW Attach Create
+  InternetGatewayAttachment:
+    Type: AWS::EC2::VPCGatewayAttachment
+    Properties:
+      VpcId: !Ref VPC
+      InternetGatewayId: !Ref InternetGateway
+
+# ------------------------------------------------------------#
+# Subnet
+# ------------------------------------------------------------#
+# Public SubnetA Create(AZ1)
+  PublicSubnetA: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      CidrBlock: !Ref PublicSubnetACIDR
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [0, !GetAZs 'ap-northeast-1'] 
+      Tags: 
+        - Key: Name
+          Value: !Sub "public-subnet-a-${NameBase}"
+
+# Private SubnetA Create(AZ1)
+  PrivateSubnetA: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      CidrBlock: !Ref PrivateSubnetACIDR
+      VpcId: !Ref VPC 
+      AvailabilityZone: !Select [0, !GetAZs 'ap-northeast-1'] 
+      Tags: 
+        - Key: Name
+          Value: !Sub "private-subnet-a-${NameBase}"
+
+# Public SubnetC Create(AZ2)
+  PublicSubnetC: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      CidrBlock: !Ref PublicSubnetCCIDR
+      VpcId: !Ref VPC
+      AvailabilityZone: !Select [1, !GetAZs 'ap-northeast-1'] 
+      Tags: 
+        - Key: Name
+          Value: !Sub "public-subnet-c-${NameBase}"
+
+# Private SubnetC Create(AZ2)
+  PrivateSubnetC: 
+    Type: "AWS::EC2::Subnet"
+    Properties: 
+      CidrBlock: !Ref PrivateSubnetCCIDR
+      VpcId: !Ref VPC 
+      AvailabilityZone: !Select [1, !GetAZs 'ap-northeast-1'] 
+      Tags: 
+        - Key: Name
+          Value: !Sub "private-subnet-c-${NameBase}"
+
+# ------------------------------------------------------------#
+#  RouteTable
+# ------------------------------------------------------------#          
+# Public RouteTableA Create(AZ1)
+  PublicRouteTableA: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "public-route-a-${NameBase}"
+
+# Private RouteTableA Create(AZ1)
+  PrivateRouteTableA: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "private-route-a-${NameBase}"
+
+# Private RouteTableC Create(AZ2)
+  PrivateRouteTableC: 
+    Type: "AWS::EC2::RouteTable"
+    Properties: 
+      VpcId: !Ref VPC 
+      Tags: 
+        - Key: Name
+          Value: !Sub "private-route-c-${NameBase}"
+
+# ------------------------------------------------------------#
+# Routing
+# ------------------------------------------------------------# 
+# PublicRouteA Create(AZ1)
+  PublicRouteA: 
+    Type: "AWS::EC2::Route"
+    Properties: 
+      RouteTableId: !Ref PublicRouteTableA 
+      DestinationCidrBlock: "0.0.0.0/0"
+      GatewayId: !Ref InternetGateway 
+
+# ------------------------------------------------------------#
+# RouteTable Associate(SubnetとRouteTableを紐づける)
+# ------------------------------------------------------------# 
+# PublicRouteTable Associate SubnetA
+  PublicSubnetARouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PublicSubnetA 
+      RouteTableId: !Ref PublicRouteTableA
+
+# PrivateRouteTable Associate SubnetA
+  PrivateSubnetARouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PrivateSubnetA
+      RouteTableId: !Ref PrivateRouteTableA 
+
+# PublicRouteTable Associate SubnetC
+  PublicSubnetCRouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PublicSubnetC 
+      RouteTableId: !Ref PublicRouteTableA
+
+# PrivateRouteTable Associate SubnetC
+  PrivateSubnetCRouteTableAssociation: 
+    Type: "AWS::EC2::SubnetRouteTableAssociation"
+    Properties: 
+      SubnetId: !Ref PrivateSubnetC
+      RouteTableId: !Ref PrivateRouteTableC
+
+# ------------------------------------------------------------#
+# Security Group 
+# ------------------------------------------------------------# 
+# EC2 Security Group 
+  EC2SecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: Allow SSH and HTTP
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 22
+          ToPort: 22
+          CidrIp: 114.159.40.81/32
+
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          SourceSecurityGroupId: !Ref ALBSecurityGroup
+
+      Tags:
+        - Key: Name
+          Value: !Sub "ec2-sg-${NameBase}"
+
+# ------------------------------- #
+# EC2 Launch Template
+# ------------------------------- #
+# Launch Template
+  EC2LaunchTemplate:
+    Type: AWS::EC2::LaunchTemplate
+    Properties:
+      LaunchTemplateName: EC2_t2micro_AL2_IMDSv2
+      LaunchTemplateData:
+        InstanceType: t2.micro
+        ImageId: ami-07b2f7dd0c0c16a8e
+        KeyName: raisetech-cnf-250816
+        MetadataOptions:
+          HttpTokens: required
+          HttpEndpoint: enabled 
+        BlockDeviceMappings:
+        - DeviceName: /dev/xvda
+          Ebs:
+            VolumeSize: 20
+            VolumeType: gp3 
+            DeleteOnTermination: true
+
+# ------------------------------------------------------------#
+# EC2 Instance 
+# ------------------------------------------------------------# 
+# EC2 Instance Create
+  EC2:
+    Type: AWS::EC2::Instance
+    Properties:
+      InstanceType: t2.micro
+      KeyName: raisetech-cnf-250816
+      ImageId: ami-07b2f7dd0c0c16a8e
+      IamInstanceProfile: !Ref EC2Profile
+      UserData:
+        Fn::Base64: |
+
+          #!/bin/bash
+
+            yum update -y
+            sudo yum remove -y mariadb mariadb-server mariadb-libs mariadb-common
+            sudo rm -rf /etc/my.cnf /etc/my.cnf.d /etc/mariadb
+            sudo rm -rf /var/lib/mysql
+            sudo systemctl stop mariadb || true
+            sudo systemctl disable mariadb || true
+            curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh
+            
+            sudo amazon-linux-extras enable nginx1
+            sudo yum install -y nginx
+            sudo systemctl start nginx
+            sudo systemctl enable nginx
+
+            sudo yum install -y awscli
+
+      NetworkInterfaces:
+        - AssociatePublicIpAddress: true
+          DeviceIndex: 0
+          SubnetId: !Ref PublicSubnetA
+          GroupSet:
+            - !Ref EC2SecurityGroup
+      LaunchTemplate:
+        LaunchTemplateId: !Ref EC2LaunchTemplate
+        Version: !GetAtt EC2LaunchTemplate.LatestVersionNumber
+      Tags:
+        - Key: Name
+          Value: !Sub "ec2-${NameBase}"
+
+# ------------------------------------------------------------#
+# RDS SecurityGroup
+# ------------------------------------------------------------# 
+# RDS SecurityGroup Create
+  RDSSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: "Allow MySQL access from EC2 SG"
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 3306
+          ToPort: 3306
+          SourceSecurityGroupId: !Ref EC2SecurityGroup
+      Tags:
+        - Key: Name
+          Value: !Sub "rds-sg-${NameBase}"
+      
+# ------------------------------------------------------------#
+# RDS Subnet Group
+# ------------------------------------------------------------# 
+# RDS SubnetGroup Create
+  RDSSubnetGroup:
+    Type: AWS::RDS::DBSubnetGroup
+    Properties:
+      DBSubnetGroupDescription: RDS subnet group
+      SubnetIds:
+        - !Ref PrivateSubnetA
+        - !Ref PrivateSubnetC
+      Tags:
+        - Key: Name
+          Value: !Sub "rds-subnet-${NameBase}"
+
+
+# ------------------------------------------------------------#
+# RDS(MySQL) Instance
+# ------------------------------------------------------------# 
+# RDS(MySQL) Create
+  RDS:
+    Type: AWS::RDS::DBInstance
+    DeletionPolicy: Snapshot
+    UpdateReplacePolicy: Delete
+    Properties:
+      DBInstanceIdentifier: rds-mysql-cfn
+      DBName: lect_cfnDB
+      Engine: mysql
+      EngineVersion: "8.0.42"
+      MasterUsername: !Ref DBUsername
+      MasterUserPassword: !Ref DBPassword
+      DBInstanceClass: db.t3.micro
+      AllocatedStorage: 20
+      StorageEncrypted: true
+      StorageType: gp2 
+      VPCSecurityGroups:
+        - !Ref RDSSecurityGroup
+      DBSubnetGroupName: !Ref RDSSubnetGroup
+      MultiAZ: false
+      PubliclyAccessible: false
+      DeletionProtection: false
+      BackupRetentionPeriod: 1
+      AutoMinorVersionUpgrade: false
+      EngineLifecycleSupport: open-source-rds-extended-support-disabled
+      Tags:
+        - Key: Name
+          Value: !Sub "rds-mysql-${NameBase}"
+
+# ------------------------------------------------------------#
+# ALB SecurityGroup
+# ------------------------------------------------------------# 
+# ALB SecurityGroup Create
+  ALBSecurityGroup:
+    Type: AWS::EC2::SecurityGroup
+    Properties:
+      GroupDescription: ALB Security Group
+      VpcId: !Ref VPC
+      SecurityGroupIngress:
+        - IpProtocol: tcp
+          FromPort: 80
+          ToPort: 80
+          CidrIp: 0.0.0.0/0
+      Tags:
+          - Key: Name
+            Value: !Sub "alb-sg-${NameBase}"
+
+# ------------------------------------------------------------#
+# ApplicationLoadBalancer
+# ------------------------------------------------------------# 
+# ApplicationLoadBalancer Create
+  ALB:
+    Type: AWS::ElasticLoadBalancingV2::LoadBalancer
+    Properties:
+      Name: !Sub "elb-alb-${NameBase}"
+      Scheme: internet-facing
+      Type: application
+      SecurityGroups:
+        - !Ref ALBSecurityGroup
+      Subnets:
+        - !Ref PublicSubnetA
+        - !Ref PublicSubnetC
+      Tags:
+          - Key: Name
+            Value: !Sub "elb-alb-${NameBase}"
+
+# ------------------------------------------------------------#
+# ALB TargetGroup
+# ------------------------------------------------------------# 
+# ALB TargetGroup Create
+  ALBTargetGroup:
+    Type: AWS::ElasticLoadBalancingV2::TargetGroup
+    Properties:
+      Name: !Sub "alb-tg-${NameBase}"
+      VpcId: !Ref VPC
+      Protocol: HTTP
+      Port: 80
+      TargetType: instance
+      Targets:
+        - Id: !Ref EC2
+      HealthCheckProtocol: HTTP
+      HealthCheckPort: "80"
+      HealthCheckPath: /
+      Matcher:
+        HttpCode: 200
+      Tags:
+          - Key: Name
+            Value: !Sub "alb-tg-${NameBase}"
+
+# ------------------------------------------------------------#
+# ALB Listener
+# ------------------------------------------------------------# 
+# ALB Listener Create
+  ALBListener:
+    Type: AWS::ElasticLoadBalancingV2::Listener
+    Properties:
+      LoadBalancerArn: !Ref ALB
+      Port: 80
+      Protocol: HTTP
+      DefaultActions:
+        - Type: forward
+          TargetGroupArn: !Ref ALBTargetGroup
+
+# ------------------------------------------------------------#
+# S3 Bucket
+# ------------------------------------------------------------# 
+# S3 Bucket Create
+  S3Bucket:
+    Type: AWS::S3::Bucket
+    DeletionPolicy: Delete
+    Properties:
+      BucketName: !Sub "s3bucket-${NameBase}"
+      BucketEncryption:
+        ServerSideEncryptionConfiguration:
+          - ServerSideEncryptionByDefault:
+              SSEAlgorithm: AES256 
+
+      PublicAccessBlockConfiguration:
+        BlockPublicAcls: true
+        BlockPublicPolicy: true
+        IgnorePublicAcls: true
+        RestrictPublicBuckets: true
+
+      AccelerateConfiguration:
+        AccelerationStatus: Suspended
+      OwnershipControls:
+        Rules:
+          - ObjectOwnership: BucketOwnerEnforced
+      Tags:
+        - Key: Name
+          Value: !Sub "s3bucket-${NameBase}"
+
+# ------------------------------------------------------------#
+# IAM Role
+# ------------------------------------------------------------# 
+# IAM Role Create
+  EC2IAMRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "EC2-IAM-Role-${NameBase}"
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: ec2.amazonaws.com
+            Action: sts:AssumeRole
+      MaxSessionDuration: 43200
+      Policies:
+        - PolicyName: !Sub "IAMRole-S3-Policy-${NameBase}"
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Effect: Allow
+                Action:
+                  - s3:GetObject
+                  - s3:PutObject
+                  - s3:ListBucket
+                Resource:
+                  - !Sub "arn:${AWS::Partition}:s3:::${S3Bucket}"
+                  - !Sub "arn:${AWS::Partition}:s3:::${S3Bucket}/*"
+
+# ------------------------------------------------------------#
+# EC2 Profile
+# ------------------------------------------------------------# 
+# EC2 Profile Create
+  EC2Profile:
+    Type: AWS::IAM::InstanceProfile
+    Properties:
+      Roles:
+        - !Ref EC2IAMRole
+      InstanceProfileName: !Sub "ec2-profile-${NameBase}"
+
+# ------------------------------------------------------------#
+# Outputs
+# ------------------------------------------------------------# 
+# Outputs Create
+Outputs:
+  ALBDNSName:
+      Description: "ALB DNS Name"
+      Value: !GetAtt ALB.DNSName
+
