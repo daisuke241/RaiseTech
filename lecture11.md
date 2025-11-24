@@ -72,7 +72,7 @@ Command "mysql -u admin -pPassword -h rds-mysql-cfn.c9uo824ccan0.ap-northeast-1.
   exit_status
     is expected to eq 0
 
-Command "mysql -u admin -pPassword -h rds-mysql-cfn.c9uo824ccan0.ap-northeast-1.rds.amazonaws.com -e "SHOW TABLES LIKE 'active_storage_attachments';" lect_cfnDB"
+Command "mysql -u admin -p#{db_pass} -h rds-mysql-cfn.c9uo824ccan0.ap-northeast-1.rds.amazonaws.com -e "SHOW TABLES LIKE 'active_storage_attachments';" lect_cfnDB"
   stdout
     is expected to match /active_storage_attachments/
   exit_status

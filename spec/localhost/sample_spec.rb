@@ -46,7 +46,7 @@ end
 
 # Active Storage のテーブル確認
 %w[active_storage_blobs active_storage_attachments].each do |table|
-  describe command("mysql -u admin -pPassword -h rds-mysql-cfn.c9uo824ccan0.ap-northeast-1.rds.amazonaws.com -e \"SHOW TABLES LIKE '#{table}';\" lect_cfnDB") do
+  describe command("mysql -u admin -p#{db_pass} -h rds-mysql-cfn.c9uo824ccan0.ap-northeast-1.rds.amazonaws.com -e \"SHOW TABLES LIKE '#{table}';\" lect_cfnDB") do
     its(:stdout) { should match /#{table}/ }
     its(:exit_status) { should eq 0 }
   end
