@@ -336,7 +336,7 @@ Resources:
       DBInstanceIdentifier: rds-mysql-cfn
       DBName: lect_cfnDB
       Engine: mysql
-      EngineVersion: "8.0.42"
+      EngineVersion: "8.0.41"
       MasterUsername: !Ref DBUsername
       MasterUserPassword: !Ref DBPassword
       DBInstanceClass: db.t3.micro
