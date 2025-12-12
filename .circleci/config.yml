@@ -1,5 +1,4 @@
 version: 2.1
-# Python Orbを使用する
 orbs:
   python: circleci/python@2.0.3
 jobs:
