@@ -10,4 +10,4 @@
 
 ### 実行ログへのリンクを記載
 
-[CircleCI 実行ログはこちら](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/14/workflows/ee3ebf02-062e-476b-818b-7469d40f3622/jobs/14)
+[CircleCI 実行ログはこちら](https://app.circleci.com/projects/github/daisuke241/RaiseTech)
