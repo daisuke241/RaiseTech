@@ -2,7 +2,7 @@
 
 ### .circleci/config.yml
 
-[circleci/config.yml](/.circleci/config.yml)
+[.circleci/config.yml](/.circleci/config.yml)
 
 ### circleciのパイプラインでcfn-lintの実行結果
 
