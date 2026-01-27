@@ -39,6 +39,9 @@ jobs:
               --template-file templates/multi-resource.yml \
               --stack-name webservice \
               --capabilities CAPABILITY_NAMED_IAM
+              --parameter-overrides \
+                  DBUsername=${DB_USER} \
+                  DBPassword=${DB_PASSWORD}
 
 
 workflows:
