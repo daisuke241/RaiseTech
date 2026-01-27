@@ -1,7 +1,10 @@
 version: 2.1
-# Python Orbを使用する。
+# Python Orbを使用
 orbs:
   python: circleci/python@2.0.3
+# AWS Cli Orbを使用
+  aws-cli: circleci/aws-cli@5.4.1
+
 jobs:
   cfn-lint:
     executor: python/default
@@ -12,8 +15,36 @@ jobs:
           name: run cfn-lint
           command: |
             cfn-lint -i W3002 W1011 -t templates/*.yml
+  
+  execution-cloudformation:
+    executor: aws-cli/default
+    steps:
+      - checkout
+  # AWS認証（CircleCI環境変数を自動で使用）
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
+
+  # AWS認証確認
+      - run:
+          name: Check AWS Identity
+          command: aws sts get-caller-identity
+
+  # CloudFormation 実行
+      - run:
+          name: Deploy CloudFormation
+          command: |
+            aws cloudformation deploy \
+              --template-file templates/multi-resource.yml \
+              --stack-name webservice \
+              --capabilities CAPABILITY_NAMED_IAM
+
 
 workflows:
   raisetech:
     jobs:
       - cfn-lint
+      - deploy-cloudformation:
+          requires:
+            - cfn-lint

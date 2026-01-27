@@ -1,0 +1,22 @@
+---
+# tasks file for bundler
+- name: Install Bundler 2.3.14
+  become_user: ec2-user
+  shell: |
+    source /home/ec2-user/.rvm/scripts/rvm
+    gem install bundler -v 2.3.14
+  args:
+    executable: /bin/bash
+    creates: /home/ec2-user/.rvm/gems/ruby-3.2.3/bin/bundler
+
+- name: Check bundler version
+  become_user: ec2-user
+  shell: |
+    source /home/ec2-user/.rvm/scripts/rvm
+    bundler -v
+  args:
+    executable: /bin/bash
+  register: bundler_version
+
+- debug:
+    var: bundler_version.stdout

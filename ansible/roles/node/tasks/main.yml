@@ -1,0 +1,52 @@
+---
+# tasks file for node role: Install NVM, Node.js, npm, yarn for ec2-user
+- name: Install required packages for node
+  become: true
+  yum:
+    name:
+      - curl
+      - git
+    state: present
+
+- name: Install NVM
+  become: true
+  become_user: "{{ node_user }}"
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/master/install.sh | bash
+  args:
+    creates: "{{ nvm_dir }}/nvm.sh"
+
+- name: Load NVM in bash profile
+  become: true
+  become_user: "{{ node_user }}"
+  lineinfile:
+    path: "/home/{{ node_user }}/.bash_profile"
+    line: 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+    create: yes
+
+- name: Install Node.js on NVM
+  become: true
+  become_user: "{{ node_user }}"
+  shell: |
+    source ~/.bash_profile
+    nvm install {{ node_version }}
+  args:
+    creates: "{{ nvm_dir }}/versions/node/v{{ node_version }}"
+
+- name: Set default Node.js version
+  become: true
+  become_user: "{{ node_user }}"
+  shell: |
+    source ~/.bash_profile
+    nvm alias default {{ node_version }}
+
+- name: Install yarn on npm
+  become: true
+  become_user: "{{ node_user }}"
+  shell: |
+    source ~/.bash_profile
+    npm install -g yarn@{{ yarn_version }}
+  args:
+    creates: "{{ nvm_dir }}/versions/node/v{{ node_version }}/bin/yarn"
+
+
