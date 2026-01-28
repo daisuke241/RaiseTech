@@ -39,7 +39,7 @@ jobs:
               --template-file templates/multi-resource.yml \
               --stack-name circleci-cfn \
               --capabilities CAPABILITY_NAMED_IAM
-              --parameter-overrides DBUsername=DB_USER DBPassword=DB_PASSWORD \
+              --parameter-overrides DBPassword=DB_PASSWORD \
 
 workflows:
   raisetech:
