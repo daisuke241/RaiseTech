@@ -37,12 +37,9 @@ jobs:
           command: |
             aws cloudformation deploy \
               --template-file templates/multi-resource.yml \
-              --stack-name webservice \
+              --stack-name circleci-cfn \
               --capabilities CAPABILITY_NAMED_IAM
-              --parameter-overrides \
-                  DBUsername=${DB_USER} \
-                  DBPassword=${DB_PASSWORD}
-
+              --parameter-overrides DBUsername=DB_USER DBPassword=DB_PASSWORD \
 
 workflows:
   raisetech:
