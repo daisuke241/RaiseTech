@@ -51,7 +51,9 @@ jobs:
     - checkout
     - ansible-playbook/install
     - run:
-      command: ansible-playbook ansible/site.yml    
+        name: Run ansible playbook
+        command: |
+          ansible-playbook ansible/site.yml   
  
 workflows:
   raisetech:
