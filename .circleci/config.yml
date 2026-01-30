@@ -50,10 +50,8 @@ jobs:
     steps:
     - checkout
     - ansible-playbook/install
-
-#  - ansible-playbook 実行
     - run:
-        playbook: ansible/site.yml     
+      command: ansible-playbook ansible/site.yml    
  
 workflows:
   raisetech:
