@@ -33,7 +33,7 @@ jobs:
           name: Check AWS Identity
           command: aws sts get-caller-identity
 
-  # CloudFormation 実行
+  # CloudFormation実行
       - run:
           name: Deploy CloudFormation
           command: |
