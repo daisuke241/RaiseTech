@@ -56,13 +56,11 @@ jobs:
        command: |
           ls -R ansible/roles
 
-
-
     - run:
         name: Run ansible playbook
         command: |
           ANSIBLE_CONFIG=ansible/ansible.cfg \
-          ansible-playbook playbooks/site.yml
+          ansible-playbook ansible/playbooks/site.yml
  
 workflows:
   raisetech:
