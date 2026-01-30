@@ -50,10 +50,18 @@ jobs:
     steps:
     - checkout
     - ansible-playbook/install
+
+    - run:
+       name: Debug roles
+       command: |
+          ls -R ansible/roles
+
+
+
     - run:
         name: Run ansible playbook
         command: |
-          cd ansible
+          ANSIBLE_CONFIG=ansible/ansible.cfg \
           ansible-playbook playbooks/site.yml
  
 workflows:
