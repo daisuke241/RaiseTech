@@ -46,7 +46,10 @@ jobs:
                   DBPassword="${DB_PASSWORD}"
 
   execution-ansible:
-    executor: ansible-playbook/default          
+    executor: ansible-playbook/default
+    steps:
+      - checkout
+      - ansible-playbook/install       
  
 
 workflows:
@@ -56,3 +59,6 @@ workflows:
       - execution-cloudformation:
           requires:
             - cfn-lint
+      - execution-ansible:
+          requires:
+            - execution-cloudformation
