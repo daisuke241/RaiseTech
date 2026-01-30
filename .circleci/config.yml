@@ -4,6 +4,8 @@ orbs:
   python: circleci/python@2.0.3
 # AWS Cli Orbを使用
   aws-cli: circleci/aws-cli@5.4.1
+# ansible-playbook Orbを使用
+  ansible-playbook: orbss/ansible-playbook@0.0.5
 
 jobs:
   cfn-lint:
@@ -42,6 +44,10 @@ jobs:
               --parameter-overrides \
                   DBUsername=${DB_USER} \
                   DBPassword="${DB_PASSWORD}"
+
+  execution-ansible:
+    executor: ansible-playbook/default          
+ 
 
 workflows:
   raisetech:
