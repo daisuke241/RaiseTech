@@ -49,6 +49,9 @@ jobs:
     executor: ansible-playbook/default
     steps:
     - checkout
+    - add_ssh_keys:
+       fingerprint:
+         "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
     - ansible-playbook/install
 
     - run:
