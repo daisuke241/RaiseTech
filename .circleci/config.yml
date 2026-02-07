@@ -50,7 +50,7 @@ jobs:
     steps:
     - checkout
     - add_ssh_keys:
-       fingerprint:
+       fingerprints:
          "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
     - ansible-playbook/install
 
@@ -64,6 +64,26 @@ jobs:
         command: |
           ANSIBLE_CONFIG=ansible/ansible.cfg \
           ansible-playbook ansible/playbooks/site.yml
+  
+  execution-serverspec:
+    docker:
+      - image: cimg/ruby:3.2
+    steps:
+      - checkout
+      - add_ssh_keys:
+        fingerprints:
+         "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
+
+      - run:
+          name: Install Serverspec
+          command: |
+            gem install serverspec rspec net-ssh
+
+      - run:
+          name: Run Serverspec
+          command: |
+            cd serverspec
+            rake spec
  
 workflows:
   raisetech:
@@ -75,3 +95,6 @@ workflows:
       - execution-ansible:
           requires:
             - execution-cloudformation
+      - execution-serverspec:
+          requires:
+            - execution-ansible

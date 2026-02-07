@@ -3,7 +3,7 @@ require 'spec_helper'
 # 変数宣言
 listen_port = 80
 s3_bucket = "s3bucket-cfn-2508"
-db_pass = ENV['DB_PASS']
+db_pass = ENV['DB_PASSWORD']
 
 # git インストール確認
 describe package('git') do
