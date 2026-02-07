@@ -13,3 +13,6 @@ set :ssh_options, {
   keys: [ENV['SSH_KEY_PATH']],
   auth_methods: ['publickey']
 }
+
+# sudo をパスワードなしで使用する
+set :sudo_password, nil
