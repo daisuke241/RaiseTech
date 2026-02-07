@@ -71,8 +71,8 @@ jobs:
     steps:
       - checkout
       - add_ssh_keys:
-        fingerprints:
-         "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
+         fingerprints:
+          "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
 
       - run:
           name: Install Serverspec
