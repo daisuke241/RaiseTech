@@ -1,6 +1,6 @@
 # 第13回課題
 
-## CircleCIのサンプルにServerSpecとAnsibleの処理を追加する
+## CircleCIのサンプルにCloudfomationとServerSpecとAnsibleの処理を追加する
 
 - [ServerSpecとAnsibleの処理を追加した .circleci/config.yml](.circleci/config.yml)
 
@@ -16,12 +16,12 @@
 
 #### Ansible実行でインストールしたモジュール
 
-- [Git](ansible/roles/git/tasks/main.yml)
-- [Nginx](ansible/roles/nginx/tasks/main.yml)
-- [MySQL](ansible/roles/mysql/tasks/main.yml)
-- [Node](ansible/roles/node/tasks/main.yml)
-- [RVM](ansible/roles/rvm/tasks/main.yml)
-- [Bundler](ansible/roles/bundler/tasks/main.yml)
+- [git](ansible/roles/git/tasks/main.yml)
+- [nginx](ansible/roles/nginx/tasks/main.yml)
+- [mysql](ansible/roles/mysql/tasks/main.yml)
+- [node](ansible/roles/node/tasks/main.yml)
+- [rvm](ansible/roles/rvm/tasks/main.yml)
+- [bundler](ansible/roles/bundler/tasks/main.yml)
 
 #### 実行結果
 

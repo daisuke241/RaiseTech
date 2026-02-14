@@ -55,6 +55,12 @@ jobs:
     - ansible-playbook/install
 
     - run:
+       name: Register known_hosts
+       command: |
+         mkdir -p ~/.ssh
+         ssh-keyscan -H ${TARGET_HOST} >> ~/.ssh/known_hosts
+
+    - run:
        name: Debug roles
        command: |
           ls -R ansible/roles
@@ -62,8 +68,9 @@ jobs:
     - run:
         name: Run ansible playbook
         command: |
-          ANSIBLE_CONFIG=ansible/ansible.cfg \
-          ansible-playbook ansible/playbooks/site.yml
+          cd ansible
+          ansible-playbook playbooks/site.yml
+        
   
   execution-serverspec:
     docker:
