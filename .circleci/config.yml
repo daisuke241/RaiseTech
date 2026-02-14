@@ -59,17 +59,6 @@ jobs:
        command: |
          mkdir -p ~/.ssh
          ssh-keyscan -H ${TARGET_HOST} >> ~/.ssh/known_hosts
-    
-    - run:
-       name: Install envsubst
-       command: |
-          sudo apt-get update
-          sudo apt-get install -y gettext
-
-    - run:
-       name: Render inventory
-       command: |
-          envsubst < ansible/inventory/hosts.ini > /tmp/hosts.ini
 
     - run:
        name: Debug roles
@@ -79,9 +68,10 @@ jobs:
     - run:
        name: Run ansible playbook
        command: |
-          ansible-playbook \
-           -i /tmp/hosts.ini \
-            ansible/playbooks/site.yml
+           ansible-playbook \
+             -i "${TARGET_HOST}," \
+             -u ec2-user \
+             ansible/playbooks/site.yml
         
   execution-serverspec:
     docker:
