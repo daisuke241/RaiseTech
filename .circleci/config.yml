@@ -61,6 +61,11 @@ jobs:
          ssh-keyscan -H ${TARGET_HOST} >> ~/.ssh/known_hosts
 
     - run:
+       name: Render inventory
+       command: |
+          envsubst < ansible/inventory/hosts.ini > /tmp/hosts.ini
+
+    - run:
        name: Debug roles
        command: |
           ls -R ansible/roles
@@ -69,7 +74,7 @@ jobs:
         name: Run ansible playbook
         command: |
           cd ansible
-          ansible-playbook playbooks/site.yml
+          ansible-playbook -i ansible/inventory ansible/site.yml
         
   
   execution-serverspec:
