@@ -77,11 +77,11 @@ jobs:
           ls -R ansible/roles
 
     - run:
-    name: Run ansible playbook
-    command: |
-      ansible-playbook \
-        -i /tmp/hosts.ini \
-        ansible/playbooks/site.yml
+       name: Run ansible playbook
+       command: |
+          ansible-playbook \
+           -i /tmp/hosts.ini \
+            ansible/playbooks/site.yml
         
   execution-serverspec:
     docker:
