@@ -72,7 +72,7 @@ jobs:
            ansible-playbook \
              -i "${TARGET_HOST}," \
              -u ec2-user \
-             ansible/playbooks/site.yml
+             playbooks/site.yml
         
   execution-serverspec:
     docker:
