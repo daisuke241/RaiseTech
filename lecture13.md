@@ -30,7 +30,7 @@
  - [ansible.cfg](ansible/ansible.cfg)
 
 #### ls -R ansible/rolesでansible/roles 配下にplaybook参照roleがあるか確認
- - [確認ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/124)
+ - [確認ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/70/workflows/747a3d4e-044e-47a9-96e3-549fecb0d8a7/jobs/132)
 
 #### 実行結果
 
