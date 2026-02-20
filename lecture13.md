@@ -2,13 +2,15 @@
 
 ## CircleCIのサンプルにCloudfomationとServerSpecとAnsibleの処理を追加する
 
-### このワークフローはコミット f6373b9 に対するものです。
+### このワークフローはコミット f6373b9 に対するものです
 
 - [ServerSpecとAnsibleの処理を追加した .circleci/config.yml](.circleci/config.yml)
 
 ### CircleCIでCloudfomationを実行
 
 #### 実行結果
+
+- このワークフローはコミット f6373b9 に対するものです。
 
 ![CircleCIでCloudfomationを実行](./images/lecture13-1.png)
 
@@ -38,6 +40,8 @@
 
 #### 実行結果
 
+- このワークフローはコミット f6373b9 に対するものです。
+
 ![CircleCIでAnsibleを実行](./images/lecture13-3.png)
 
 ![CircleCIでAnsibleを実行](./images/lecture13-4.png)
@@ -53,6 +57,8 @@
 
 #### 実行結果
 
+- このワークフローはコミット f6373b9 に対するものです。
+
 ![CircleCIでServerSpecを実行](./images/lecture13-5.png)
 
 ![CircleCIでServerSpecを実行](./images/lecture13-6.png)
@@ -66,6 +72,8 @@
  - [serverspecの実行ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/70/workflows/747a3d4e-044e-47a9-96e3-549fecb0d8a7/jobs/133)
 
  #### CircleCIでの全通ログ
+
+- このワークフローはコミット f6373b9 に対するものです。
 
  ![CircleCIでの全通ログ](./images/lecture13-7.png)
 
