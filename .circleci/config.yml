@@ -1,7 +1,12 @@
 version: 2.1
-# Python Orbを使用する。
+# Python Orbを使用
 orbs:
   python: circleci/python@2.0.3
+# AWS Cli Orbを使用
+  aws-cli: circleci/aws-cli@5.4.1
+# ansible-playbook Orbを使用
+  ansible-playbook: orbss/ansible-playbook@0.0.5
+
 jobs:
   cfn-lint:
     executor: python/default
@@ -12,8 +17,93 @@ jobs:
           name: run cfn-lint
           command: |
             cfn-lint -i W3002 W1011 -t templates/*.yml
+  
+  execution-cloudformation:
+    executor: aws-cli/default
+    steps:
+      - checkout
+  # AWS認証（CircleCI環境変数を自動で使用）
+      - aws-cli/setup:
+          aws_access_key_id: AWS_ACCESS_KEY_ID
+          aws_secret_access_key: AWS_SECRET_ACCESS_KEY
+          region: AWS_DEFAULT_REGION
 
+  # AWS 認証確認
+      - run:
+          name: Check AWS Identity
+          command: aws sts get-caller-identity
+
+  # CloudFormation 実行
+      - run:
+          name: Deploy CloudFormation
+          command: |
+            aws cloudformation deploy \
+              --template-file templates/multi-resource.yml \
+              --stack-name circleci-cfn \
+              --capabilities CAPABILITY_NAMED_IAM \
+              --parameter-overrides \
+                  DBUsername=${DB_USER} \
+                  DBPassword="${DB_PASSWORD}"
+
+  execution-ansible:
+    executor: ansible-playbook/default
+    steps:
+    - checkout
+    - add_ssh_keys:
+       fingerprints:
+         "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
+    - ansible-playbook/install
+
+    - run:
+       name: Register known_hosts
+       command: |
+         mkdir -p ~/.ssh
+         ssh-keyscan -H ${TARGET_HOST} >> ~/.ssh/known_hosts
+
+    - run:
+       name: Debug roles
+       command: |
+          ls -R ansible/roles
+
+    - run:
+       name: Run ansible playbook
+       command: |
+           cd ansible
+           ansible-playbook \
+             -i "${TARGET_HOST}," \
+             -u ec2-user \
+             playbooks/site.yml
+        
+  execution-serverspec:
+    docker:
+      - image: cimg/ruby:3.2
+    steps:
+      - checkout
+      - add_ssh_keys:
+         fingerprints:
+          "SHA256:qZt5zKF52tjoike7OOZd5YMrSorhgt110ecfWmq236E"
+
+      - run:
+          name: Install Serverspec
+          command: |
+            gem install serverspec rspec net-ssh
+
+      - run:
+          name: Run Serverspec
+          command: |
+            cd serverspec
+            rake spec
+ 
 workflows:
   raisetech:
     jobs:
       - cfn-lint
+      - execution-cloudformation:
+          requires:
+            - cfn-lint
+      - execution-ansible:
+          requires:
+            - execution-cloudformation
+      - execution-serverspec:
+          requires:
+            - execution-ansible

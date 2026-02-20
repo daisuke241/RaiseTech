@@ -234,7 +234,7 @@ Resources:
       LaunchTemplateName: EC2_t2micro_AL2_IMDSv2
       LaunchTemplateData:
         InstanceType: t2.micro
-        ImageId: ami-07b2f7dd0c0c16a8e
+        ImageId: ami-04a0bed0506216d2d
         KeyName: raisetech-cnf-250816
         MetadataOptions:
           HttpTokens: required

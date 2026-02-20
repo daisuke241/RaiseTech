@@ -1,0 +1,13 @@
+---
+- name: Install module on targets server
+  hosts: targets
+  become: yes
+
+  roles:
+    - git
+    - nginx
+    - mysql
+    - rvm
+    - bundler
+    - node
+    

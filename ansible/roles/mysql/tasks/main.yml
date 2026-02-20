@@ -1,0 +1,8 @@
+---
+# tasks file for mysql
+- name: Install MySQL using official script (only once)
+  become: true
+  shell: |
+    curl -fsSL https://raw.githubusercontent.com/MasatoshiMizumoto/raisetech_documents/main/aws/scripts/mysql_amazon_linux_2.sh | sh
+  args:
+    creates: /usr/bin/mysql

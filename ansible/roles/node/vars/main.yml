@@ -1,0 +1,16 @@
+---
+# vars file for node
+
+# roles/node/vars/main.yml
+# Node.js version (on nvm)
+node_version: "17.9.1"
+
+# Yarn version
+yarn_version: "1.22.19"
+
+# nvm install user
+node_user: ec2-user
+
+# nvm install directory (user home)
+nvm_dir: "/home/{{ node_user }}/.nvm"
+

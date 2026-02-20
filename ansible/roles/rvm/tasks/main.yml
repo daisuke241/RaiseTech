@@ -1,0 +1,67 @@
+---
+# tasks file for rvm
+
+- name: Install required packages for RVM
+  become: true
+  yum:
+    name:
+      - curl
+      - gnupg2
+      - gcc
+      - gcc-c++
+      - make
+      - patch
+      - autoconf
+      - automake
+      - bison
+      - readline-devel
+      - zlib-devel
+      - libyaml-devel
+      - libffi-devel
+      - openssl-devel
+    state: present
+
+- name: Import RVM GPG keys
+  become: true
+  become_user: ec2-user
+  shell: |
+    gpg --keyserver hkp://keyserver.ubuntu.com \
+        --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 \
+                   7D2BAF1CF37B13E2069D6956105BD0E739499BDB
+  args:
+    creates: /home/ec2-user/.gnupg
+
+- name: Install RVM
+  become: true
+  become_user: ec2-user
+  shell: |
+    curl -sSL https://get.rvm.io | bash
+  args:
+    creates: /home/ec2-user/.rvm
+
+- name: Add RVM to bash_profile
+  become: true
+  become_user: ec2-user
+  lineinfile:
+    path: /home/ec2-user/.bash_profile
+    line: 'source "$HOME/.rvm/scripts/rvm"'
+    create: yes
+
+- name: Install Ruby 3.2.3 on RVM
+  become: true
+  become_user: ec2-user
+  shell: |
+    source /home/ec2-user/.rvm/scripts/rvm
+    rvm install 3.2.3
+  args:
+    executable: /bin/bash
+    creates: /home/ec2-user/.rvm/rubies/ruby-3.2.3
+
+- name: Set Ruby 3.2.3 as default
+  become: true
+  become_user: ec2-user
+  shell: |
+    source /home/ec2-user/.rvm/scripts/rvm
+    rvm use 3.2.3 --default
+  args:
+    executable: /bin/bash
