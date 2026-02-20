@@ -12,9 +12,12 @@
 
 - [cloudfomationのテンプレート](templates/multi-resource.yml)
 
+#### cloudfomationの実行ログ
+- [cloudfomationの実行ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/123)
+
 ### CircleCIでAnsibleを実行
 
-#### Ansible実行でインストールしたモジュール
+#### Ansible実行でインストールしたモジュールとymlファイル
 
 - [git](ansible/roles/git/tasks/main.yml)
 - [nginx](ansible/roles/nginx/tasks/main.yml)
@@ -23,6 +26,12 @@
 - [rvm](ansible/roles/rvm/tasks/main.yml)
 - [bundler](ansible/roles/bundler/tasks/main.yml)
 
+#### ansible.cfgにrolesのパス定義
+ - [ansible.cfg](ansible/ansible.cfg)
+
+#### ls -R ansible/rolesでansible/roles 配下にplaybook参照roleがあるか確認
+ - [確認ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/124)
+
 #### 実行結果
 
 ![CircleCIでAnsibleを実行](./images/lecture13-2.png)
@@ -30,6 +39,9 @@
  - [inbentory](ansible/inventory/hosts.ini)
 
  - [playbooks](ansible/playbooks/site.yml)
+
+ #### ansibleの実行ログ
+ - [ansibleの実行ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/124)
 
 ### CircleCIでServerSpecを実行
 
@@ -41,3 +53,9 @@
 - [spec_helper.rb](serverspec/spec/spec_helper.rb)
 
 - [Rakefile](serverspec/Rakefile)
+
+#### serverspecの実行ログ
+ - [serverspecの実行ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/125)
+
+ #### CircleCIの全通ログ
+- [CircleCIの全通ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6)
