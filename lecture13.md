@@ -58,4 +58,4 @@
  - [serverspecの実行ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6/jobs/125)
 
  #### CircleCIの全通ログ
-- [CircleCIの全通ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/68/workflows/41696b2c-04b3-47a8-b993-61b8c1a5f3f6)
+- [CircleCIの全通ログ](https://app.circleci.com/pipelines/circleci/5yqRmomGxEF98JLra8cwCH/DTkXGQGSTf2n45aJZqVv5c/69)
